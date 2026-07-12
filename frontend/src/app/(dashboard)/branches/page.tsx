@@ -1,3 +1,5 @@
+"use client";
+
 import { Building2, MapPin, Plus, Store } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";

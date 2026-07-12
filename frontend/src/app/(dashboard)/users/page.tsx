@@ -1,3 +1,5 @@
+"use client";
+
 import { Plus, Shield, UserCog, UsersRound } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";

@@ -2,7 +2,7 @@
 
 import { Bell, ChevronDown, LogOut, Menu, Store, UserCircle2 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
@@ -30,6 +30,7 @@ const branches = ["شعبه مرکزی", "شعبه شرق", "شعبه کرج"];
 
 export function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, logout } = useAuth();
   const [now, setNow] = useState(new Date());
   const [menuOpen, setMenuOpen] = useState(false);
@@ -96,7 +97,7 @@ export function Navbar({ onMenuClick }: { onMenuClick?: () => void }) {
                   <UserCircle2 className="h-4 w-4" />
                   پروفایل کاربر
                 </button>
-                <button type="button" className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm text-rose-600 transition hover:bg-rose-50 dark:hover:bg-rose-950/30" onClick={() => { setMenuOpen(false); logout(); }}>
+                <button type="button" className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm text-rose-600 transition hover:bg-rose-50 dark:hover:bg-rose-950/30" onClick={() => { setMenuOpen(false); logout(); router.replace('/login'); }}>
                   <LogOut className="h-4 w-4" />
                   خروج از حساب
                 </button>

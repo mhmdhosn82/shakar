@@ -1,3 +1,5 @@
+"use client";
+
 import { FileSpreadsheet, Landmark, Plus, Scale } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";

@@ -1,3 +1,5 @@
+"use client";
+
 import { FolderTree, Layers2, Plus, Tag } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";

@@ -1,3 +1,5 @@
+"use client";
+
 import { CreditCard, Plus, UserRound, WalletCards } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";

@@ -1,3 +1,5 @@
+"use client";
+
 import { AlertTriangle, Boxes, PackageCheck, Warehouse } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";

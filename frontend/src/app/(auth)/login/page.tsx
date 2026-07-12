@@ -25,6 +25,12 @@ const highlights = [
   "کنترل اقساط، حسابداری و گردش مالی در یک محیط واحد",
 ];
 
+const demoCredentials = [
+  { label: "نام کاربری", value: "admin" },
+  { label: "ایمیل جایگزین", value: "admin@shakar.ir" },
+  { label: "رمز عبور", value: "Admin@123456" },
+];
+
 export default function LoginPage() {
   const router = useRouter();
   const { login, isAuthenticated, isLoading } = useAuth();
@@ -88,12 +94,12 @@ export default function LoginPage() {
               </div>
               <div className="space-y-2">
                 <CardTitle className="text-3xl font-black text-slate-900 dark:text-white">ورود به فروشگاه شاکار</CardTitle>
-                <CardDescription className="text-base leading-7">برای دسترسی به پنل مدیریت، نام کاربری و رمز عبور خود را وارد کنید.</CardDescription>
+                <CardDescription className="text-base leading-7">برای دسترسی به پنل مدیریت، نام کاربری یا ایمیل و رمز عبور خود را وارد کنید.</CardDescription>
               </div>
             </CardHeader>
             <CardContent>
               <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
-                <Input label="نام کاربری" placeholder="مثلاً admin" error={errors.username?.message} leftIcon={<UserRound className="h-4 w-4" />} {...register("username")} />
+                <Input label="نام کاربری یا ایمیل" placeholder="admin یا admin@shakar.ir" error={errors.username?.message} leftIcon={<UserRound className="h-4 w-4" />} {...register("username")} />
                 <Input label="رمز عبور" type="password" placeholder="رمز عبور خود را وارد کنید" error={errors.password?.message} leftIcon={<ShieldCheck className="h-4 w-4" />} {...register("password")} />
 
                 {submitError ? <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-200">{submitError}</div> : null}
@@ -103,8 +109,23 @@ export default function LoginPage() {
                 </Button>
               </form>
 
+              <div className="mt-6 rounded-3xl border border-primary/15 bg-primary/5 p-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <h3 className="text-sm font-black text-slate-900 dark:text-white">اطلاعات ورود نمونه</h3>
+                  <span className="rounded-full bg-white/80 px-3 py-1 text-xs text-primary shadow-sm dark:bg-slate-900/70">Seeded Demo Access</span>
+                </div>
+                <div className="grid gap-3">
+                  {demoCredentials.map((item) => (
+                    <div key={item.label} className="flex items-center justify-between rounded-2xl bg-white/80 px-4 py-3 text-sm shadow-sm dark:bg-slate-900/70">
+                      <span className="text-slate-500 dark:text-slate-400">{item.label}</span>
+                      <code className="font-bold text-slate-900 dark:text-white">{item.value}</code>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <div className="mt-8 grid gap-3 rounded-2xl bg-slate-50 p-4 text-sm text-slate-600 dark:bg-slate-900/60 dark:text-slate-300">
-                <div className="flex items-center justify-between"><span>امنیت ورود</span><span className="font-semibold text-primary">توکن و نشست امن</span></div>
+                <div className="flex items-center justify-between"><span>امنیت ورود</span><span className="font-semibold text-primary">JWT + نشست امن</span></div>
                 <div className="flex items-center justify-between"><span>پشتیبانی</span><span className="font-semibold">داشبورد فارسی و RTL</span></div>
               </div>
             </CardContent>

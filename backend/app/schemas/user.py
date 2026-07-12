@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -89,5 +90,6 @@ class UserRead(APIModel):
     phone: str | None = None
     role_id: UUID | None = None
     branch_id: UUID | None = None
+    created_at: datetime
     is_active: bool
     is_superuser: bool

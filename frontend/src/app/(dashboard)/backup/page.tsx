@@ -1,3 +1,5 @@
+"use client";
+
 import { DatabaseBackup, Download, HardDriveUpload, ShieldCheck } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";
