@@ -1,0 +1,11 @@
+{
+  "name": "shakar-workspace",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "powershell -ExecutionPolicy Bypass -File ./run.ps1",
+    "dev:noinstall": "powershell -ExecutionPolicy Bypass -File ./run.ps1 -NoInstall",
+    "dev:backend": "powershell -ExecutionPolicy Bypass -File ./run.ps1 -BackendOnly",
+    "dev:frontend": "powershell -ExecutionPolicy Bypass -File ./run.ps1 -FrontendOnly"
+  }
+}

@@ -59,6 +59,43 @@ Database (SQLite for local dev / PostgreSQL for production) + Cache (Redis optio
 
 ---
 
+## اجرای یک‌دستوری از ریشه پروژه
+
+### سریع‌ترین روش در ویندوز
+از ریشه پروژه فقط این دستور را اجرا کن:
+
+```powershell
+.\run.ps1
+```
+
+یا اگر npm را ترجیح می‌دهی:
+
+```powershell
+npm run dev
+```
+
+این اسکریپت به‌صورت خودکار کارهای زیر را انجام می‌دهد:
+- ساخت `backend/.env` از روی `backend/.env.example` اگر وجود نداشته باشد
+- ساخت `frontend/.env.local` از روی `frontend/.env.example` اگر وجود نداشته باشد
+- ساخت `.venv` در بک‌اند در صورت نیاز
+- نصب وابستگی‌های backend و frontend
+- اجرای migrationهای دیتابیس
+- اجرای seed اولیه
+- بالا آوردن backend روی `http://127.0.0.1:8000`
+- بالا آوردن frontend روی `http://localhost:3000`
+
+### گزینه‌های مفید
+```powershell
+.\run.ps1 -NoInstall
+.\run.ps1 -BackendOnly
+.\run.ps1 -FrontendOnly
+npm run dev:noinstall
+npm run dev:backend
+npm run dev:frontend
+```
+
+---
+
 ## ماژول‌ها
 
 | ماژول                | وضعیت |
@@ -82,6 +119,7 @@ Database (SQLite for local dev / PostgreSQL for production) + Cache (Redis optio
 ### مسیر پیشنهادی برای توسعه محلی
 - Python **3.11** یا **3.12**
 - Node.js 20+
+- Windows PowerShell
 
 ### گزینه‌های اجرا
 - **بدون Docker و بدون PostgreSQL برای شروع سریع:** SQLite پیش‌فرض است.
@@ -91,11 +129,9 @@ Database (SQLite for local dev / PostgreSQL for production) + Cache (Redis optio
 
 ---
 
-## نصب و راه‌اندازی
+## نصب و راه‌اندازی دستی
 
-### توسعه سریع بدون Docker (توصیه‌شده برای ویندوز)
-
-#### Backend
+### Backend
 ```bash
 cd backend
 python -m venv .venv
@@ -106,18 +142,13 @@ source .venv/bin/activate
 
 pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
-
-# ساخت فایل تنظیمات
 copy .env.example .env
-# یا در Linux/macOS:
-# cp .env.example .env
-
 alembic upgrade head
 python -m app.db.init_db
-uvicorn app.main:app --reload --port 8000
+uvicorn main:app --reload --port 8000
 ```
 
-#### Frontend
+### Frontend
 ```bash
 cd frontend
 npm install
@@ -126,11 +157,11 @@ npm run dev
 
 ### دسترسی
 
-| سرویس        | آدرس                      |
-|-------------|---------------------------|
-| پنل مدیریت  | http://localhost:3000     |
-| API Backend | http://localhost:8000     |
-| API Docs    | http://localhost:8000/docs |
+| سرویس        | آدرس                       |
+|-------------|----------------------------|
+| پنل مدیریت  | http://localhost:3000      |
+| API Backend | http://127.0.0.1:8000      |
+| API Docs    | http://127.0.0.1:8000/docs |
 
 **اطلاعات ورود پیش‌فرض:** `admin@shakar.ir` / `Admin@123456`
 
@@ -184,6 +215,8 @@ shakar/
 │   │   ├── lib/               # API client, utilities
 │   │   └── types/             # TypeScript types
 │   └── package.json
+├── run.ps1
+├── package.json
 ├── docker-compose.yml
 └── README.md
 ```
