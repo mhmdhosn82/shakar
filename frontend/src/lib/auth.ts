@@ -15,6 +15,7 @@ type BackendCurrentUser = {
   phone?: string | null;
   role_id?: string | null;
   branch_id?: string | null;
+  created_at: string;
   is_active: boolean;
   is_superuser: boolean;
 };
@@ -53,7 +54,7 @@ const mapCurrentUser = (user: BackendCurrentUser): User => ({
   fullName: user.full_name || user.username,
   phone: user.phone || undefined,
   status: user.is_active ? "active" : "inactive",
-  createdAt: new Date().toISOString(),
+  createdAt: user.created_at,
   role: user.is_superuser
     ? { id: "admin", name: "مدیر سیستم", permissions: [] }
     : undefined,

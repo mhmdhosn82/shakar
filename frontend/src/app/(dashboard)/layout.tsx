@@ -27,7 +27,7 @@ export default function DashboardLayout({
   if (isLoading || !isAuthenticated) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="flex items-center gap-3 rounded-3xl border border-border/70 bg-white/80 px-6 py-4 shadow-soft dark:bg-slate-950/80">
+        <div role="status" aria-live="polite" className="flex items-center gap-3 rounded-3xl border border-border/70 bg-white/80 px-6 py-4 shadow-soft dark:bg-slate-950/80">
           <LoadingSpinner size="lg" />
           <span className="text-sm font-medium text-slate-600 dark:text-slate-300">در حال آماده‌سازی پنل مدیریتی...</span>
         </div>
