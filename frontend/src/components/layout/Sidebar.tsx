@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ComponentType } from "react";
 import { useMemo, useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -31,7 +32,7 @@ type SidebarProps = {
 type NavItem = {
   title: string;
   href: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: ComponentType<{ className?: string }>;
 };
 
 type NavSection = {

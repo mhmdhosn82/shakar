@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, DatabaseZap } from "lucide-react";
+import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
@@ -11,7 +12,7 @@ import { cn, formatNumber } from "@/lib/utils";
 export type ColumnDef<T> = {
   key: keyof T | string;
   title: string;
-  render?: (value: unknown, row: T, index: number) => React.ReactNode;
+  render?: (value: unknown, row: T, index: number) => ReactNode;
   align?: "right" | "center" | "left";
   className?: string;
 };

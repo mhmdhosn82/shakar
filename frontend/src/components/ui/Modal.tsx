@@ -1,6 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
+import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -9,7 +10,7 @@ interface ModalProps {
   title: string;
   description?: string;
   onClose: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }
 

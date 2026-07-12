@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { Navbar } from "@/components/layout/Navbar";
@@ -8,7 +9,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 export default function DashboardLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from pydantic import BaseModel
 from fastapi import APIRouter, Depends, status
+from pydantic import BaseModel
 
 from app.core.deps import get_current_active_user, require_permission
 from app.models.user import User

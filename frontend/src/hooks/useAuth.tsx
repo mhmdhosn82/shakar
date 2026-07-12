@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { getStoredUser, getToken, login as loginRequest, logout as logoutRequest, setStoredUser } from "@/lib/auth";
@@ -17,7 +18,7 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUserState] = useState<User | null>(null);
   const [token, setTokenState] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);

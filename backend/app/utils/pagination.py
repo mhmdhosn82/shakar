@@ -1,11 +1,8 @@
 from __future__ import annotations
 
 from math import ceil
-from typing import Generic, TypeVar
 
 from pydantic import BaseModel
-
-T = TypeVar("T")
 
 
 class PaginationMeta(BaseModel):
