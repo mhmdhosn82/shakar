@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatNumber(value: number) {
-  if (!Number.isFinite(value)) return "۰";
+  if (!Number.isFinite(value)) return new Intl.NumberFormat("fa-IR").format(0);
   return new Intl.NumberFormat("fa-IR").format(value);
 }
 

@@ -70,7 +70,7 @@ const normalizeErrorMessage = (error: unknown) => {
   if (typeof payload?.message === "string") return payload.message;
 
   if (error.code === "ECONNABORTED") {
-    return "پاسخی از سرور دریافت نشد. از اجرا بودن backend مطمئن شوید.";
+    return "پاسخی از سرور دریافت نشد. از اجرای backend مطمئن شوید.";
   }
 
   if (!error.response) {
