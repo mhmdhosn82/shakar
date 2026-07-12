@@ -1,0 +1,119 @@
+version: "3.9"
+
+services:
+  # ─── PostgreSQL Database ───────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: shakar_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-shakar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-shakar_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-shakar_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-shakar} -d ${POSTGRES_DB:-shakar_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shakar_network
+
+  # ─── Redis (for caching and task queue) ───────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: shakar_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shakar_network
+
+  # ─── Backend (FastAPI) ─────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: shakar_backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-shakar}:${POSTGRES_PASSWORD:-shakar_secret}@db:5432/${POSTGRES_DB:-shakar_db}
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./backend:/app
+      - backup_data:/app/backups
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - shakar_network
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # ─── Frontend (Next.js) ───────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: shakar_frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://backend:8000
+      NODE_ENV: ${NODE_ENV:-development}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - shakar_network
+
+  # ─── pgAdmin (optional, for DB management) ────────────────────────────────
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: shakar_pgadmin
+    restart: unless-stopped
+    profiles:
+      - tools
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@shakar.ir}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - shakar_network
+
+volumes:
+  postgres_data:
+    name: shakar_postgres_data
+  redis_data:
+    name: shakar_redis_data
+  backup_data:
+    name: shakar_backup_data
+
+networks:
+  shakar_network:
+    name: shakar_network
+    driver: bridge
