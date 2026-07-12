@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import { getStoredUser, getToken, login as loginRequest, logout as logoutRequest, setStoredUser } from "@/lib/auth";
 import type { LoginPayload, User } from "@/types";
@@ -29,26 +29,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  const setUser = (nextUser: User | null) => {
+  const setUser = useCallback((nextUser: User | null) => {
     setUserState(nextUser);
     setStoredUser(nextUser);
-  };
+  }, []);
 
-  const login = async (payload: LoginPayload) => {
+  const login = useCallback(async (payload: LoginPayload) => {
     const response = await loginRequest(payload);
     const nextUser = response.user ?? ({ id: payload.username, fullName: payload.username, username: payload.username, status: "active", createdAt: new Date().toISOString() } as User);
     setUser(nextUser);
     setTokenState(getToken());
     return nextUser;
-  };
+  }, [setUser]);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setUserState(null);
     setTokenState(null);
     logoutRequest();
-  };
+  }, []);
 
-  const value = useMemo<AuthContextValue>(() => ({ user, token, isLoading, isAuthenticated: Boolean(token), login, logout, setUser }), [isLoading, token, user]);
+  const value = useMemo<AuthContextValue>(() => ({ user, token, isLoading, isAuthenticated: Boolean(token), login, logout, setUser }), [isLoading, login, logout, setUser, token, user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

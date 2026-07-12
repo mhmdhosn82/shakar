@@ -145,8 +145,10 @@ pip install -r requirements.txt
 copy .env.example .env
 alembic upgrade head
 python -m app.db.init_db
-uvicorn main:app --reload --port 8000
+python main.py --reload --port 8000
 ```
+
+> نکته: برای سازگاری با ابزارهای قدیمی‌تر، `uvicorn main:app --reload --port 8000` و `uvicorn app.main:app --reload --port 8000` هم پشتیبانی می‌شوند، اما مسیر پیشنهادی برای توسعه محلی اکنون `python main.py` است.
 
 ### Frontend
 ```bash
@@ -163,7 +165,10 @@ npm run dev
 | API Backend | http://127.0.0.1:8000      |
 | API Docs    | http://127.0.0.1:8000/docs |
 
-**اطلاعات ورود پیش‌فرض:** `admin@shakar.ir` / `Admin@123456`
+**اطلاعات ورود پیش‌فرض:**  
+- نام کاربری: `admin`  
+- یا ایمیل: `admin@shakar.ir`  
+- رمز عبور: `Admin@123456`
 
 ---
 

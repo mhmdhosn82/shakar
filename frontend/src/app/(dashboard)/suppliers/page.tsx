@@ -1,3 +1,5 @@
+"use client";
+
 import { Clock3, Handshake, Plus, Truck } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";

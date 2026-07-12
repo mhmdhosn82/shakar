@@ -1,3 +1,5 @@
+"use client";
+
 import { Package, Plus, ScanLine, Warehouse } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";

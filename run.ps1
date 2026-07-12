@@ -71,7 +71,7 @@ function Start-Backend {
     Start-Process powershell -ArgumentList @(
         '-NoExit',
         '-Command',
-        "Set-Location '$backendPath'; & '$backendPython' -m uvicorn main:app --reload --port 8000"
+        "Set-Location '$backendPath'; & '$backendPython' 'main.py' --reload --port 8000"
     ) | Out-Null
 }
 

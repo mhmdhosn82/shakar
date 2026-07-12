@@ -1,3 +1,5 @@
+"use client";
+
 import { BadgeCheck, Globe2, Plus, Tags } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";

@@ -1,3 +1,5 @@
+"use client";
+
 import { ClipboardList, PackagePlus, Plus, Truck } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";
