@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from logging.config import fileConfig
 
 from alembic import context
@@ -55,6 +56,4 @@ async def run_migrations_online() -> None:
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    import asyncio
-
     asyncio.run(run_migrations_online())
