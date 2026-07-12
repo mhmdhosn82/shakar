@@ -7,11 +7,11 @@
 
 **نسخه ۱.۰.۰** | توسعه‌دهنده: محمدحسین آقازاده
 
-[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3.11%20recommended-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.111-green.svg)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://postgresql.org)
-[![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://docker.com)
+[![SQLite](https://img.shields.io/badge/SQLite-Dev%20Default-003b57.svg)](https://sqlite.org)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Production-blue.svg)](https://postgresql.org)
 
 </div>
 
@@ -19,7 +19,7 @@
 
 ## معرفی سیستم
 
-**فروشگاه شاکار** یک سیستم جامع مدیریت فروشگاهی، حسابداری و انبارداری است که برای فروشگاه‌های موبایل و اکسسوری طراحی شده است.
+**فروشگاه شاکار** یک سیستم جامع مدیریت فروشگاهی، حسابداری و انبارداری برای فروشگاه‌های موبایل و اکسسوری است. این پروژه با FastAPI در بک‌اند و Next.js در فرانت‌اند ساخته شده و به‌صورت ماژولار طراحی شده تا برای توسعه نسخه‌های حرفه‌ای‌تر آماده باشد.
 
 ### ویژگی‌های کلیدی
 
@@ -39,23 +39,23 @@
 ```
 Frontend (Next.js 14 + TypeScript + Tailwind CSS RTL)
         ↕
-Backend (FastAPI + Python 3.11 + SQLAlchemy 2.x async)
+Backend (FastAPI + Python + SQLAlchemy 2.x async)
         ↕
-Database (PostgreSQL 16) + Cache (Redis 7)
+Database (SQLite for local dev / PostgreSQL for production) + Cache (Redis optional)
 ```
 
 ### Technology Stack
 
-| Layer       | Technology                          |
-|-------------|-------------------------------------|
-| Backend     | Python 3.11, FastAPI 0.111          |
-| ORM         | SQLAlchemy 2.x (async)              |
-| Migrations  | Alembic                             |
-| Database    | PostgreSQL 16                       |
-| Cache       | Redis 7                             |
-| Frontend    | Next.js 14, TypeScript, Tailwind    |
-| Auth        | JWT (python-jose) + bcrypt          |
-| Container   | Docker + Docker Compose             |
+| Layer       | Technology                              |
+|-------------|------------------------------------------|
+| Backend     | Python 3.11 recommended, FastAPI 0.111   |
+| ORM         | SQLAlchemy 2.x (async)                   |
+| Migrations  | Alembic                                  |
+| Database    | SQLite (dev), PostgreSQL (production)    |
+| Cache       | Redis (optional)                         |
+| Frontend    | Next.js 14, TypeScript, Tailwind         |
+| Auth        | JWT (python-jose) + bcrypt               |
+| Container   | Docker + Docker Compose                  |
 
 ---
 
@@ -79,66 +79,85 @@ Database (PostgreSQL 16) + Cache (Redis 7)
 
 ## پیش‌نیازها
 
-- Docker 24+ و Docker Compose 2.x
-- یا: Python 3.11+ و Node.js 20+ و PostgreSQL 15+
+### مسیر پیشنهادی برای توسعه محلی
+- Python **3.11** یا **3.12**
+- Node.js 20+
+
+### گزینه‌های اجرا
+- **بدون Docker و بدون PostgreSQL برای شروع سریع:** SQLite پیش‌فرض است.
+- **برای محیط production-like:** PostgreSQL و Docker Compose.
+
+> توجه: Python 3.13 ممکن است با بعضی وابستگی‌های باینری مثل `asyncpg` و `pydantic-core` روی برخی سیستم‌ها دردسر ایجاد کند. برای اجرای مطمئن، Python 3.11 توصیه می‌شود.
 
 ---
 
 ## نصب و راه‌اندازی
 
-### با Docker (توصیه شده)
+### توسعه سریع بدون Docker (توصیه‌شده برای ویندوز)
 
-```bash
-# کلون مخزن
-git clone https://github.com/mhmdhosn82/shakar.git
-cd shakar
-
-# تنظیم متغیرهای محیطی
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env.local
-
-# اجرا
-docker compose up -d
-
-# اجرای migrations
-docker compose exec backend alembic upgrade head
-
-# ایجاد داده‌های اولیه
-docker compose exec backend python -m app.db.init_db
-```
-
-### دسترسی
-
-| سرویس        | آدرس                          |
-|-------------|-------------------------------|
-| پنل مدیریت  | http://localhost:3000          |
-| API Backend | http://localhost:8000          |
-| API Docs    | http://localhost:8000/docs     |
-
-**اطلاعات ورود پیش‌فرض:** `admin@shakar.ir` / `Admin@123456`
-
----
-
-## توسعه بدون Docker
-
-### Backend
-
+#### Backend
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# Linux/macOS
+source .venv/bin/activate
+
+pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
+
+# ساخت فایل تنظیمات
+copy .env.example .env
+# یا در Linux/macOS:
+# cp .env.example .env
+
 alembic upgrade head
 python -m app.db.init_db
 uvicorn app.main:app --reload --port 8000
 ```
 
-### Frontend
-
+#### Frontend
 ```bash
 cd frontend
 npm install
 npm run dev
+```
+
+### دسترسی
+
+| سرویس        | آدرس                      |
+|-------------|---------------------------|
+| پنل مدیریت  | http://localhost:3000     |
+| API Backend | http://localhost:8000     |
+| API Docs    | http://localhost:8000/docs |
+
+**اطلاعات ورود پیش‌فرض:** `admin@shakar.ir` / `Admin@123456`
+
+---
+
+## اجرای PostgreSQL به‌جای SQLite
+
+اگر خواستی به‌جای SQLite از PostgreSQL استفاده کنی، فایل `backend/.env` را تغییر بده:
+
+```env
+DATABASE_URL=postgresql+asyncpg://shakar:shakar@localhost:5432/shakar_db
+```
+
+در این حالت باید PostgreSQL نصب و در حال اجرا باشد.
+
+---
+
+## نصب با Docker
+
+```bash
+git clone https://github.com/mhmdhosn82/shakar.git
+cd shakar
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env.local
+docker compose up -d
+docker compose exec backend alembic upgrade head
+docker compose exec backend python -m app.db.init_db
 ```
 
 ---
@@ -173,12 +192,19 @@ shakar/
 
 ## بکاپ و ریستور
 
+### PostgreSQL
 ```bash
 # بکاپ
 docker compose exec db pg_dump -U shakar shakar_db | gzip > backup.sql.gz
 
 # ریستور
 docker compose exec -T db psql -U shakar shakar_db < backup.sql
+```
+
+### SQLite
+```bash
+# بکاپ فایل توسعه
+copy backend\shakar.db backend\shakar-backup.db
 ```
 
 ---
